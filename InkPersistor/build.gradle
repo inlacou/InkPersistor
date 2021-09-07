@@ -42,5 +42,8 @@ dependencies {
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.4.0'
 
     compileOnly 'com.jakewharton.timber:timber:4.7.1'
+    compileOnly 'com.google.code.gson:gson:2.8.6'
     compileOnly 'com.github.inlacou.InkCommons:InkKotlinExtensions:1.0.7'
+    androidTestImplementation 'com.github.inlacou.InkCommons:InkKotlinExtensions:1.0.7'
+    androidTestImplementation 'com.google.code.gson:gson:2.8.6'
 }

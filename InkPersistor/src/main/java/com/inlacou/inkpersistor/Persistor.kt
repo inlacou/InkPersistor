@@ -20,14 +20,13 @@ import com.inlacou.inkpersistor.GenericSharedPrefMngr.setItem
 import com.inlacou.inkpersistor.GenericSharedPrefMngr.setList
 import com.inlacou.inkpersistor.GenericSharedPrefMngr.setLongValue
 import com.inlacou.inkpersistor.GenericSharedPrefMngr.setStringValue
-import timber.log.Timber
 import java.lang.reflect.Field
 
 object Persistor {
 	
 	
 	fun setField(context: Context, key: String, field: Field?, target: Any?, sharedPreferences: SharedPreferences = PreferenceManager.getDefaultSharedPreferences(context)) {
-		Timber.d("persisssstor | $key | ${field?.type?.simpleName} | $target")
+		Logger.d("persisssstor | $key | ${field?.type?.simpleName} | $target")
 		if(field==null || target==null) {
 			erase(context = context, key = key, sharedPreferences = sharedPreferences); return }
 		when(field.type) {
@@ -41,7 +40,7 @@ object Persistor {
 			HashMap::class.java -> setList(context, key, (field.get(target) as HashMap<*, *>).toList(), sharedPreferences = sharedPreferences)
 			List::class.java -> setList(context, key, (field.get(target) as List<*>), sharedPreferences = sharedPreferences)
 			Enum::class.java -> {
-				Timber.d("persisssstor | Enum | $key | ${field.type.simpleName} | $target")
+				Logger.d("persisssstor | Enum | $key | ${field.type.simpleName} | $target")
 				setEnumValueByName(context, key, field.get(target) as Enum<*>, sharedPreferences = sharedPreferences)
 			}
 			else -> {
@@ -55,7 +54,7 @@ object Persistor {
 	
 	fun getField(context: Context, key: String, field: Field?, sharedPreferences: SharedPreferences = PreferenceManager.getDefaultSharedPreferences(context)): Any? {
 		if(field==null) return null
-		Timber.d("getField | field: ${field.name} | ${field.type} | ${field.type.simpleName}");
+		Logger.d("getField | field: ${field.name} | ${field.type} | ${field.type.simpleName}");
 		return when(field.type) {
 			Boolean::class.java -> getBooleanValue(context, key, sharedPreferences = sharedPreferences)
 			Float::class.java -> getFloatValue(context, key, sharedPreferences = sharedPreferences)
