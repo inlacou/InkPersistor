@@ -4,7 +4,7 @@ import android.content.Context
 import com.inlacou.inkkotlinextensions.toHashMap
 import com.inlacou.inkkotlinextensions.toPairs
 
-interface ReduxSaveable {
+interface PersistSaveable {
 	//Works flawlessly
 	fun save(context: Context) {
 		val declaredFields = this::class.java.declaredFields
@@ -21,9 +21,9 @@ interface ReduxSaveable {
 	}
 }
 
-interface ReduxLoadable
+interface PersistLoadable
 //Works, but new object types or objects with generics must be added explicitly
-inline fun <reified T : ReduxSaveable> ReduxLoadable.load(context: Context): T {
+inline fun <reified T : PersistSaveable> PersistLoadable.load(context: Context): T {
 	//Get the data
 	val map = T::class.java.declaredFields.flatMap { field -> field.annotations.asList().toPairs(field) }.mapNotNull { pair ->
 		when(val annotation = pair.first) {

@@ -58,8 +58,8 @@ object GenericSharedPrefMngr {
 	fun getNullableIntValue(context: Context, key: String): Int? {
 		val sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context)
 		Logger.d("saved$key... ${sharedPreferences.getInt(key, 0)}")
-		return sharedPreferences.getInt(key, -1).let {
-			if(it==-1){
+		return sharedPreferences.getInt(key, Int.MIN_VALUE).let {
+			if(it==Int.MIN_VALUE){
 				null
 			}else{
 				it
@@ -70,7 +70,26 @@ object GenericSharedPrefMngr {
 	fun setNullableIntValue(context: Context, key: String, value: Int?) {
 		Logger.d("set$key... $value")
 		val editor = PreferenceManager.getDefaultSharedPreferences(context).edit()
-		editor.putInt(key, value ?: -1)
+		editor.putInt(key, value ?: Int.MIN_VALUE)
+		editor.commit()
+	}
+	
+	fun getNullableLongValue(context: Context, key: String): Long? {
+		val sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context)
+		Logger.d("saved$key... ${sharedPreferences.getInt(key, 0)}")
+		return sharedPreferences.getLong(key, Long.MIN_VALUE).let {
+			if(it==Long.MIN_VALUE){
+				null
+			}else{
+				it
+			}
+		}
+	}
+	
+	fun setNullableLongValue(context: Context, key: String, value: Long?) {
+		Logger.d("set$key... $value")
+		val editor = PreferenceManager.getDefaultSharedPreferences(context).edit()
+		editor.putLong(key, value ?: Long.MIN_VALUE)
 		editor.commit()
 	}
 	
@@ -95,6 +114,25 @@ object GenericSharedPrefMngr {
 		Logger.d("set$key... $value")
 		val editor = sharedPreferences.edit()
 		editor.putFloat(key, value)
+		editor.commit()
+	}
+	
+	fun getNullableFloatValue(context: Context, key: String): Float? {
+		val sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context)
+		Logger.d("saved$key... ${sharedPreferences.getInt(key, 0)}")
+		return sharedPreferences.getFloat(key, Float.MIN_VALUE).let {
+			if(it==Float.MIN_VALUE) {
+				null
+			}else{
+				it
+			}
+		}
+	}
+	
+	fun setNullableFloatValue(context: Context, key: String, value: Float?) {
+		Logger.d("set$key... $value")
+		val editor = PreferenceManager.getDefaultSharedPreferences(context).edit()
+		editor.putFloat(key, value ?: Float.MIN_VALUE)
 		editor.commit()
 	}
 	

@@ -81,8 +81,8 @@ class PersistorInstTest {
 		val surname: String = "",
 		@Persist("TEST_EXAMPLE_PERSIST_WITH_ANNOTATIONS_PRIMITIVES_ONLY_INT")
 		val age: Int = 0,
-	): ReduxSaveable {
-		companion object: ReduxLoadable
+	): PersistSaveable {
+		companion object: PersistLoadable
 	}
 	data class ExampleItemPrimitivesAndSimpleGenerics(
 		@Persist("TEST_EXAMPLE_PERSIST_WITH_ANNOTATIONS_SIMPLE_GENERICS_STRING")
@@ -93,8 +93,8 @@ class PersistorInstTest {
 		val age: Int = 0,
 		@Persist("TEST_EXAMPLE_PERSIST_WITH_ANNOTATIONS_SIMPLE_GENERICS_LIST")
 		val countriesVisited: List<String> = listOf()
-	): ReduxSaveable {
-		companion object: ReduxLoadable
+	): PersistSaveable {
+		companion object: PersistLoadable
 	}
 	data class ExampleItemPrimitivesAndComplexGenerics(
 		@Persist("TEST_EXAMPLE_PERSIST_WITH_ANNOTATIONS_COMPLEX_GENERICS_STRING")
@@ -109,8 +109,8 @@ class PersistorInstTest {
 		val countriesVisited: List<Country> = listOf(),
 		@Persist("TEST_EXAMPLE_PERSIST_WITH_ANNOTATIONS_COMPLEX_GENERICS_HASHMAP")
 		val countriesVisitedTimes: HashMap<Country, Int> = hashMapOf(),
-	): ReduxSaveable {
-		companion object: ReduxLoadable
+	): PersistSaveable {
+		companion object: PersistLoadable
 	}
 	data class Country(val name: String, val population: Long)
 }
