@@ -1,7 +1,7 @@
 # InkPersistor
 Android Library for data persistance in Android SharedPreferences
 
-Import with `implementation 'com.github.inlacou:InkPersistor:'` [![](https://jitpack.io/v/inlacou/InkPersistor.svg)](https://jitpack.io/#inlacou/InkSwitch)
+Import with `implementation 'com.github.inlacou:InkPersistor:'` [![](https://jitpack.io/v/inlacou/InkPersistor.svg)](https://jitpack.io/#inlacou/InkPersistor)
 
 ## Normal
 ### String
