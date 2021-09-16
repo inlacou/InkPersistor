@@ -57,7 +57,7 @@ object GenericSharedPrefMngr {
 	
 	fun getNullableIntValue(context: Context, key: String): Int? {
 		val sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context)
-		Logger.d("saved$key... ${sharedPreferences.getInt(key, 0)}")
+		Logger.d("saved$key... ${sharedPreferences.getInt(key, Int.MIN_VALUE)}")
 		return sharedPreferences.getInt(key, Int.MIN_VALUE).let {
 			if(it==Int.MIN_VALUE){
 				null
@@ -76,7 +76,7 @@ object GenericSharedPrefMngr {
 	
 	fun getNullableLongValue(context: Context, key: String): Long? {
 		val sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context)
-		Logger.d("saved$key... ${sharedPreferences.getInt(key, 0)}")
+		Logger.d("saved$key... ${sharedPreferences.getLong(key, Long.MIN_VALUE)}")
 		return sharedPreferences.getLong(key, Long.MIN_VALUE).let {
 			if(it==Long.MIN_VALUE){
 				null
@@ -119,7 +119,7 @@ object GenericSharedPrefMngr {
 	
 	fun getNullableFloatValue(context: Context, key: String): Float? {
 		val sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context)
-		Logger.d("saved$key... ${sharedPreferences.getInt(key, 0)}")
+		Logger.d("saved$key... ${sharedPreferences.getFloat(key, Float.MIN_VALUE)}")
 		return sharedPreferences.getFloat(key, Float.MIN_VALUE).let {
 			if(it==Float.MIN_VALUE) {
 				null
