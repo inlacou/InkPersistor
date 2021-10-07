@@ -1,19 +1,25 @@
 package com.inlacou.inkpersistorlibraryproject
 
 import android.os.Bundle
+import android.util.Log
 import com.google.android.material.snackbar.Snackbar
 import androidx.appcompat.app.AppCompatActivity
-import androidx.navigation.findNavController
-import androidx.navigation.ui.AppBarConfiguration
-import androidx.navigation.ui.navigateUp
-import androidx.navigation.ui.setupActionBarWithNavController
 import android.view.Menu
 import android.view.MenuItem
+import com.inlacou.inkkotlinextensions.toJson
+import com.inlacou.inkpersistor.GenericSharedPrefMngr
+import com.inlacou.inkpersistor.Persistor
+import com.inlacou.inkpersistor.load
+import com.inlacou.inkpersistorlibraryproject.business.ExampleEnum
+import com.inlacou.inkpersistorlibraryproject.business.FakeSimplifiedStore
 import com.inlacou.inkpersistorlibraryproject.databinding.ActivityMainBinding
+import timber.log.Timber
+import java.util.HashMap
+import kotlin.reflect.full.declaredMemberProperties
+import kotlin.reflect.jvm.javaField
 
 class MainActivity : AppCompatActivity() {
 	
-	private lateinit var appBarConfiguration: AppBarConfiguration
 	private lateinit var binding: ActivityMainBinding
 	
 	override fun onCreate(savedInstanceState: Bundle?) {
@@ -23,17 +29,36 @@ class MainActivity : AppCompatActivity() {
 		setContentView(binding.root)
 		
 		setSupportActionBar(binding.toolbar)
-		
-		val navController = findNavController(R.id.nav_host_fragment_content_main)
-		appBarConfiguration = AppBarConfiguration(navController.graph)
-		setupActionBarWithNavController(navController, appBarConfiguration)
-		
+
 		binding.fab.setOnClickListener { view ->
-			Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-				.setAction("Action", null).show()
+			Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG).setAction("Action", null).show()
+		}
+
+		Timber.plant(Timber.DebugTree())
+
+
+		Persistor.additionalLoader = { context, key, field, isNullable, default, sharedPreferences ->
+			Log.e("persistor", "key:                  $key")
+			Log.e("persistor", "type:                 ${field.type}")
+			Log.e("persistor", "contemplated types 0: ${ExampleEnum::class.java}")
+			when (field.type) {
+				ExampleEnum::class.java ->
+					if(isNullable) GenericSharedPrefMngr.getNullableEnumValueByName(this, key, default as ExampleEnum, sharedPreferences = sharedPreferences)
+					else GenericSharedPrefMngr.getEnumValueByName(this, key, default as ExampleEnum, sharedPreferences = sharedPreferences)
+				else -> null
+			}
+		}
+
+		Timber.d("FakeSimplifiedStore.load<FakeSimplifiedStore>(this): ${FakeSimplifiedStore.load<FakeSimplifiedStore>(this).toJson()}")
+
+		FakeSimplifiedStore::class.declaredMemberProperties.forEachIndexed { index, kProperty1 ->
+			Timber.d("declaredMemberProperties $index: ${kProperty1.name} " +
+			  "| returnType: ${kProperty1.returnType} " +
+			  "| annotations2: ${kProperty1.javaField?.annotations?.map { it.annotationClass.simpleName }} " +
+			  "| isMarkedNullable: ${kProperty1.returnType.isMarkedNullable}")
 		}
 	}
-	
+
 	override fun onCreateOptionsMenu(menu: Menu): Boolean {
 		// Inflate the menu; this adds items to the action bar if it is present.
 		menuInflater.inflate(R.menu.menu_main, menu)
@@ -49,10 +74,5 @@ class MainActivity : AppCompatActivity() {
 			else -> super.onOptionsItemSelected(item)
 		}
 	}
-	
-	override fun onSupportNavigateUp(): Boolean {
-		val navController = findNavController(R.id.nav_host_fragment_content_main)
-		return navController.navigateUp(appBarConfiguration)
-			|| super.onSupportNavigateUp()
-	}
+
 }

@@ -24,17 +24,23 @@ class PersistorInstTest {
 	@Before
 	fun setup() {
 		appContext = ApplicationProvider.getApplicationContext()
-		Persistor.additionalGenericLoader = { context, key, field, sharedPreferences ->
+		Persistor.additionalGenericLoader = { context, key, field, isNullable, default, sharedPreferences ->
 			when(field.genericType) {
-				GenericHolders::class.java.getDeclaredField("countryList").genericType -> GenericSharedPrefMngr.getList<Country>(appContext, key, sharedPreferences = sharedPreferences)
-				GenericHolders::class.java.getDeclaredField("countryVisitsHashMap").genericType -> GenericSharedPrefMngr.getList<Pair<Country, Int>>(appContext, key, sharedPreferences = sharedPreferences).toHashMap()
-				else -> null
+				GenericHolders::class.java.getDeclaredField("countryList").genericType ->
+					if(isNullable) GenericSharedPrefMngr.getNullableList(appContext, key, default = default as List<Country>, sharedPreferences = sharedPreferences)
+					else GenericSharedPrefMngr.getList(appContext, key, default = default as List<Country>, sharedPreferences = sharedPreferences)
+				GenericHolders::class.java.getDeclaredField("countryVisitsHashMap").genericType ->
+					if(isNullable) GenericSharedPrefMngr.getNullableList(appContext, key, default = (default as HashMap<Country, Int>).toList(), sharedPreferences = sharedPreferences)?.toHashMap()
+					else GenericSharedPrefMngr.getList(appContext, key, default = (default as HashMap<Country, Int>).toList(), sharedPreferences = sharedPreferences).toHashMap()
+				else -> throw FieldGenericTypeNotHandledException("${field.genericType} not handled")
 			}
 		}
-		Persistor.additionalLoader = { context, key, field, sharedPreferences ->
+		Persistor.additionalLoader = { context, key, field, isNullable, default, sharedPreferences ->
 			when (field.type) {
-				ExampleEnum::class.java -> GenericSharedPrefMngr.getEnumValueByName<ExampleEnum>(appContext, key, sharedPreferences = sharedPreferences)
-				else -> null
+				ExampleEnum::class.java ->
+					if(isNullable) GenericSharedPrefMngr.getNullableEnumValueByName(appContext, key, default = default as ExampleEnum, sharedPreferences = sharedPreferences)
+					else GenericSharedPrefMngr.getEnumValueByName(appContext, key, default = default as ExampleEnum, sharedPreferences = sharedPreferences)
+				else -> throw FieldTypeNotHandledException("${field.type} not handled")
 			}
 		}
 	}
@@ -73,6 +79,17 @@ class PersistorInstTest {
 		Assert.assertEquals(value, ExampleItemPrimitivesAndComplexGenerics.load<ExampleItemPrimitivesAndComplexGenerics>(appContext))
 	}
 
+	@Test
+	fun item_content_by_annotations_default_values() {
+		val value = ExampleItemDefaultValues.load<ExampleItemDefaultValues>(appContext)
+		Assert.assertEquals(23, value.age)
+		Assert.assertEquals("Adolin", value.name)
+		Assert.assertEquals("Kholin", value.surname)
+		Assert.assertEquals(listOf<Country>(), value.countriesVisited)
+		Assert.assertEquals(hashMapOf(Pair(Country("Cordoba", 200), 0), Pair(Country("Graná", 250), 1)), value.countriesVisitedTimes)
+		Assert.assertEquals(ExampleEnum.OPTION_5, value.option)
+	}
+
 	enum class ExampleEnum { OPTION_1, OPTION_2, OPTION_3, OPTION_4, OPTION_5, OPTION_6, OPTION_7, OPTION_8, OPTION_9, OPTION_10  }
 	data class ExampleItemPrimitiveValuesOnly(
 		@Persist("TEST_EXAMPLE_PERSIST_WITH_ANNOTATIONS_PRIMITIVES_ONLY_STRING")
@@ -109,6 +126,22 @@ class PersistorInstTest {
 		val countriesVisited: List<Country> = listOf(),
 		@Persist("TEST_EXAMPLE_PERSIST_WITH_ANNOTATIONS_COMPLEX_GENERICS_HASHMAP")
 		val countriesVisitedTimes: HashMap<Country, Int> = hashMapOf(),
+	): PersistSaveable {
+		companion object: PersistLoadable
+	}
+	data class ExampleItemDefaultValues(
+		@Persist("TEST_EXAMPLE_PERSIST_WITH_ANNOTATIONS_DEFAULT_VALUES_STRING")
+		val name: String = "Adolin",
+		@Persist("TEST_EXAMPLE_PERSIST_WITH_ANNOTATIONS_DEFAULT_VALUES_STRING_2")
+		val surname: String = "Kholin",
+		@Persist("TEST_EXAMPLE_PERSIST_WITH_ANNOTATIONS_DEFAULT_VALUES_INT")
+		val age: Int = 23,
+		@Persist("TEST_EXAMPLE_PERSIST_WITH_ANNOTATIONS_DEFAULT_VALUES_ENUM")
+		val option: ExampleEnum = ExampleEnum.OPTION_5,
+		@Persist("TEST_EXAMPLE_PERSIST_WITH_ANNOTATIONS_DEFAULT_VALUES_LIST")
+		val countriesVisited: List<Country> = listOf(),
+		@Persist("TEST_EXAMPLE_PERSIST_WITH_ANNOTATIONS_DEFAULT_VALUES_HASHMAP")
+		val countriesVisitedTimes: HashMap<Country, Int> = hashMapOf(Pair(Country("Cordoba", 200), 0), Pair(Country("Graná", 250), 1)),
 	): PersistSaveable {
 		companion object: PersistLoadable
 	}

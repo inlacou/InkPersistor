@@ -20,32 +20,32 @@ object GenericSharedPrefMngr {
 	}
 	
 	fun getStringValue(context: Context, key: String, default: String = "", sharedPreferences: SharedPreferences = PreferenceManager.getDefaultSharedPreferences(context)): String {
-		Logger.d("saved$key... ${sharedPreferences.getString(key, default)}")
+		Logger.d("getStringValue | saved$key... ${sharedPreferences.getString(key, default)}")
 		return sharedPreferences.getString(key, default) ?: default
 	}
 	
 	fun setStringValue(context: Context, key: String, value: String, sharedPreferences: SharedPreferences = PreferenceManager.getDefaultSharedPreferences(context)) {
-		Logger.d("set$key... $value")
+		Logger.d("setStringValue | set$key... $value")
 		val editor = sharedPreferences.edit()
 		editor.putString(key, value)
 		editor.commit()
 	}
 	
-	fun getNullableStringValue(context: Context, key: String, sharedPreferences: SharedPreferences = PreferenceManager.getDefaultSharedPreferences(context)): String? {
-		Logger.d("saved$key... ${sharedPreferences.getString(key, null)}")
-		return sharedPreferences.getString(key, null)
+	fun getNullableStringValue(context: Context, key: String, default: String? = null, sharedPreferences: SharedPreferences = PreferenceManager.getDefaultSharedPreferences(context)): String? {
+		Logger.d("getNullableStringValue | saved$key... ${sharedPreferences.getString(key, default)}")
+		return sharedPreferences.getString(key, default)
 	}
 	
 	fun setNullableStringValue(context: Context, key: String, value: String?, sharedPreferences: SharedPreferences = PreferenceManager.getDefaultSharedPreferences(context)) {
-		Logger.d("set$key... $value")
+		Logger.d("setNullableStringValue | set$key... $value")
 		val editor = sharedPreferences.edit()
 		editor.putString(key, value)
 		editor.commit()
 	}
 	
-	fun getLongValue(context: Context, key: String, sharedPreferences: SharedPreferences = PreferenceManager.getDefaultSharedPreferences(context)): Long {
-		Logger.d("saved$key... ${sharedPreferences.getLong(key, 0)}")
-		return sharedPreferences.getLong(key, 0)
+	fun getLongValue(context: Context, key: String, default: Long = 0, sharedPreferences: SharedPreferences = PreferenceManager.getDefaultSharedPreferences(context)): Long {
+		Logger.d("saved$key... ${sharedPreferences.getLong(key, default)}")
+		return sharedPreferences.getLong(key, default)
 	}
 	
 	fun setLongValue(context: Context, key: String, value: Long, sharedPreferences: SharedPreferences = PreferenceManager.getDefaultSharedPreferences(context)) {
@@ -55,59 +55,59 @@ object GenericSharedPrefMngr {
 		editor.commit()
 	}
 	
-	fun getNullableIntValue(context: Context, key: String): Int? {
-		val sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context)
-		Logger.d("saved$key... ${sharedPreferences.getInt(key, Int.MIN_VALUE)}")
+	fun getNullableIntValue(context: Context, key: String, default: Int?, sharedPreferences: SharedPreferences = PreferenceManager.getDefaultSharedPreferences(context)): Int? {
+		Logger.d("getNullableIntValue | saved$key... ${sharedPreferences.getInt(key, Int.MIN_VALUE)}")
 		return sharedPreferences.getInt(key, Int.MIN_VALUE).let {
 			if(it==Int.MIN_VALUE){
-				null
+				default
 			}else{
 				it
+			}.also {
+				Logger.d("getNullableIntValue | saved$key... $it")
 			}
 		}
 	}
 	
-	fun setNullableIntValue(context: Context, key: String, value: Int?) {
-		Logger.d("set$key... $value")
-		val editor = PreferenceManager.getDefaultSharedPreferences(context).edit()
+	fun setNullableIntValue(context: Context, key: String, value: Int?, sharedPreferences: SharedPreferences = PreferenceManager.getDefaultSharedPreferences(context)) {
+		Logger.d("setNullableIntValue | set$key... $value")
+		val editor = sharedPreferences.edit()
 		editor.putInt(key, value ?: Int.MIN_VALUE)
 		editor.commit()
 	}
 	
-	fun getNullableLongValue(context: Context, key: String): Long? {
-		val sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context)
+	fun getNullableLongValue(context: Context, key: String, default: Long? = null, sharedPreferences: SharedPreferences = PreferenceManager.getDefaultSharedPreferences(context)): Long? {
 		Logger.d("saved$key... ${sharedPreferences.getLong(key, Long.MIN_VALUE)}")
 		return sharedPreferences.getLong(key, Long.MIN_VALUE).let {
 			if(it==Long.MIN_VALUE){
-				null
+				default
 			}else{
 				it
 			}
 		}
 	}
 	
-	fun setNullableLongValue(context: Context, key: String, value: Long?) {
+	fun setNullableLongValue(context: Context, key: String, value: Long?, sharedPreferences: SharedPreferences = PreferenceManager.getDefaultSharedPreferences(context)) {
 		Logger.d("set$key... $value")
-		val editor = PreferenceManager.getDefaultSharedPreferences(context).edit()
+		val editor = sharedPreferences.edit()
 		editor.putLong(key, value ?: Long.MIN_VALUE)
 		editor.commit()
 	}
 	
-	fun getIntValue(context: Context, key: String, sharedPreferences: SharedPreferences = PreferenceManager.getDefaultSharedPreferences(context)): Int {
-		Logger.d("saved$key... ${sharedPreferences.getInt(key, 0)}")
-		return sharedPreferences.getInt(key, 0)
+	fun getIntValue(context: Context, key: String, default: Int = 0, sharedPreferences: SharedPreferences = PreferenceManager.getDefaultSharedPreferences(context)): Int {
+		Logger.d("getIntValue | saved$key... ${sharedPreferences.getInt(key, default)}")
+		return sharedPreferences.getInt(key, default)
 	}
 	
 	fun setIntValue(context: Context, key: String, value: Int, sharedPreferences: SharedPreferences = PreferenceManager.getDefaultSharedPreferences(context)) {
-		Logger.d("set$key... $value")
+		Logger.d("setIntValue | set$key... $value")
 		val editor = sharedPreferences.edit()
 		editor.putInt(key, value)
 		editor.commit()
 	}
 	
-	fun getFloatValue(context: Context, key: String, sharedPreferences: SharedPreferences = PreferenceManager.getDefaultSharedPreferences(context)): Float {
-		Logger.d("saved$key... ${sharedPreferences.getFloat(key, 0F)}")
-		return sharedPreferences.getFloat(key, 0F)
+	fun getFloatValue(context: Context, key: String, default: Float = 0f, sharedPreferences: SharedPreferences = PreferenceManager.getDefaultSharedPreferences(context)): Float {
+		Logger.d("saved$key... ${sharedPreferences.getFloat(key, default)}")
+		return sharedPreferences.getFloat(key, default)
 	}
 	
 	fun setFloatValue(context: Context, key: String, value: Float, sharedPreferences: SharedPreferences = PreferenceManager.getDefaultSharedPreferences(context)) {
@@ -117,50 +117,79 @@ object GenericSharedPrefMngr {
 		editor.commit()
 	}
 	
-	fun getNullableFloatValue(context: Context, key: String): Float? {
-		val sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context)
+	fun getNullableFloatValue(context: Context, key: String, default: Float?, sharedPreferences: SharedPreferences = PreferenceManager.getDefaultSharedPreferences(context)): Float? {
 		Logger.d("saved$key... ${sharedPreferences.getFloat(key, Float.MIN_VALUE)}")
 		return sharedPreferences.getFloat(key, Float.MIN_VALUE).let {
 			if(it==Float.MIN_VALUE) {
-				null
+				default
 			}else{
 				it
 			}
 		}
 	}
 	
-	fun setNullableFloatValue(context: Context, key: String, value: Float?) {
+	fun setNullableFloatValue(context: Context, key: String, value: Float?, sharedPreferences: SharedPreferences = PreferenceManager.getDefaultSharedPreferences(context)) {
 		Logger.d("set$key... $value")
-		val editor = PreferenceManager.getDefaultSharedPreferences(context).edit()
+		val editor = sharedPreferences.edit()
 		editor.putFloat(key, value ?: Float.MIN_VALUE)
 		editor.commit()
 	}
-	
-	fun getDoubleValue(context: Context, key: String, sharedPreferences: SharedPreferences = PreferenceManager.getDefaultSharedPreferences(context)): Double {
-		return (sharedPreferences.getString(key, "0.0") ?: "0.0").toDouble().apply {
+
+	fun getNullableDoubleValue(context: Context, key: String, default: Double?, sharedPreferences: SharedPreferences = PreferenceManager.getDefaultSharedPreferences(context)): Double? {
+		return (sharedPreferences.getString(key, default?.toString() ?: "") ?: (default?.toString() ?: "")).toDoubleOrNull().apply {
 			Logger.d("saved$key... $this")
 		}
 	}
 	
+	fun setNullableDoubleValue(context: Context, key: String, value: Double?, sharedPreferences: SharedPreferences = PreferenceManager.getDefaultSharedPreferences(context)) {
+		Logger.d("set$key... $value")
+		val editor = sharedPreferences.edit()
+		editor.putString(key, value?.toString() ?: "")
+		editor.commit()
+	}
+
+	fun getDoubleValue(context: Context, key: String, default: Double = 0.0, sharedPreferences: SharedPreferences = PreferenceManager.getDefaultSharedPreferences(context)): Double {
+		return (sharedPreferences.getString(key, default.toString()) ?: default.toString()).toDouble().apply {
+			Logger.d("saved$key... $this")
+		}
+	}
+
 	fun setDoubleValue(context: Context, key: String, value: Double, sharedPreferences: SharedPreferences = PreferenceManager.getDefaultSharedPreferences(context)) {
 		Logger.d("set$key... $value")
 		val editor = sharedPreferences.edit()
 		editor.putString(key, value.toString())
 		editor.commit()
 	}
-	
+
 	fun getBooleanValue(context: Context, key: String, default: Boolean = false, sharedPreferences: SharedPreferences = PreferenceManager.getDefaultSharedPreferences(context)): Boolean {
-		Logger.d("saved$key... ${sharedPreferences.getBoolean(key, default)}")
-		return sharedPreferences.getBoolean(key, default)
+		return (sharedPreferences.getInt(key, if(default) 1 else 0)==1).also {
+			Logger.d("getBooleanValue | saved$key... $it")
+		}
+
 	}
 	
 	fun setBooleanValue(context: Context, key: String, value: Boolean, sharedPreferences: SharedPreferences = PreferenceManager.getDefaultSharedPreferences(context)) {
-		Logger.d("set$key... $value")
+		Logger.d("setBooleanValue | set$key... $value")
 		val editor = sharedPreferences.edit()
-		editor.putBoolean(key, value)
+		editor.putInt(key, if(value) 1 else 0)
 		editor.commit()
 	}
-	
+
+	fun getNullableBooleanValue(context: Context, key: String, default: Boolean?, sharedPreferences: SharedPreferences = PreferenceManager.getDefaultSharedPreferences(context)): Boolean? {
+		return sharedPreferences.getInt(key, if(default==null) -1 else if(default) 1 else 0).let {
+			(if(it==1) true else if(it==0) false else null).also {
+				Logger.d("getNullableBooleanValue | saved$key... $it")
+			}
+		}
+	}
+
+	fun setNullableBooleanValue(context: Context, key: String, value: Boolean?, sharedPreferences: SharedPreferences = PreferenceManager.getDefaultSharedPreferences(context)) {
+		Logger.d("setNullableBooleanValue | set$key... $value")
+		val editor = sharedPreferences.edit()
+		editor.putInt(key, if(value==null) Int.MIN_VALUE else if(value) 1 else 0)
+		editor.commit()
+	}
+
 	/**
 	 * Warning, the GET part does not work
 	 */
@@ -190,14 +219,24 @@ object GenericSharedPrefMngr {
 		}
 	}
 	
-	inline fun <reified T: Enum<T>> getEnumValueByName(context: Context, key: String, sharedPreferences: SharedPreferences = android.preference.PreferenceManager.getDefaultSharedPreferences(context)): T? {
+	inline fun <reified T: Enum<T>> getEnumValueByName(context: Context, key: String, default: T, sharedPreferences: SharedPreferences = PreferenceManager.getDefaultSharedPreferences(context)): T {
 		val aux = sharedPreferences.getString(key, "")
-		Logger.d("enumvaluebyname | saved $key... $aux")
+		Logger.d("getEnumValueByName | saved $key... $aux")
 		return enumValues<T>().find {
-			Logger.d("enumvaluebyname | $it == $aux")
-			it.name==aux ?: "" }
+			Logger.d("getEnumValueByName | find $it==$aux")
+			it.name==aux ?: ""
+		} ?: default
 	}
-	
+
+	inline fun <reified T: Enum<T>> getNullableEnumValueByName(context: Context, key: String, default: T? = null, sharedPreferences: SharedPreferences = PreferenceManager.getDefaultSharedPreferences(context)): T? {
+		val aux = sharedPreferences.getString(key, "")
+		Logger.d("getNullableEnumValueByName | saved $key... $aux")
+		return enumValues<T>().find {
+			Logger.d("getNullableEnumValueByName | find $it==$aux")
+			it.name==aux ?: ""
+		} ?: default
+	}
+
 	inline fun <reified T: Any> getItem(context: Context, key: String, sharedPreferences: SharedPreferences = PreferenceManager.getDefaultSharedPreferences(context)): T? {
 		Logger.d("saved$key... ${sharedPreferences.getString(key, "{}")}")
 		return sharedPreferences.getString(key, "{}")?.fromJson()
@@ -210,32 +249,45 @@ object GenericSharedPrefMngr {
 		editor.commit()
 	}
 	
-	fun setList(context: Context, keyBase: String, value: List<Any?>, sharedPreferences: SharedPreferences = PreferenceManager.getDefaultSharedPreferences(context)) {
-		Logger.d("set list $keyBase... $value")
+	fun setList(context: Context, key: String, value: List<Any?>, sharedPreferences: SharedPreferences = PreferenceManager.getDefaultSharedPreferences(context)) {
+		Logger.d("set list $key... $value")
 		val editor = sharedPreferences.edit()
+		//Save the number of items to retrieve later
+		editor.putString(key, value.size.toString())
 		value.forEachIndexed { index, item ->
-			editor.putString(keyBase+index, item?.toJson() ?: "{}")
-		}
-		val max = value.size
-		(max .. (max+100)*2).forEach {
-			editor.putString(keyBase+it, "{}")
+			editor.putString(key+index, item?.toJson() ?: "{}")
 		}
 		editor.commit()
 	}
-	
-	inline fun <reified T: Any> getList(context: Context, keyBase: String, sharedPreferences: SharedPreferences = PreferenceManager.getDefaultSharedPreferences(context)): List<T> {
-		Logger.d("get list $keyBase")
+
+	/**
+	 * WARNING! if T is nullable it will not add to the result the null items that should :S
+	 */
+	inline fun <reified T: Any> getList(context: Context, key: String, default: List<T>, sharedPreferences: SharedPreferences = PreferenceManager.getDefaultSharedPreferences(context)): List<T> {
+		Logger.d("get list $key")
 		val results = mutableListOf<T>()
-		var index = 0
-		var item: T?
-		do {
-			sharedPreferences.getString(keyBase+index, "{}")?.fromJson<T>().also {
-				item = it
-				index++
+		val size = sharedPreferences.getString(key, null)?.toInt() ?: return default
+		repeat(size) {
+			sharedPreferences.getString(key+it, "{}")?.fromJson<T>().also {
 				if(it!=null) results.add(it)
 			}
-		}while (item!=null)
+		}
 		return results
 	}
-	
+
+	/**
+	 * WARNING! if T is nullable it will not add to the result the null items that should :S
+	 */
+	inline fun <reified T: Any> getNullableList(context: Context, key: String, default: List<T>? = null, sharedPreferences: SharedPreferences = PreferenceManager.getDefaultSharedPreferences(context)): List<T>? {
+		Logger.d("get list $key")
+		val results = mutableListOf<T>()
+		val size = sharedPreferences.getString(key, null)?.toInt() ?: return default
+		repeat(size) {
+			sharedPreferences.getString(key+it, "{}")?.fromJson<T>().also {
+				if(it!=null) results.add(it)
+			}
+		}
+		return results
+	}
+
 }

@@ -96,7 +96,7 @@ class SharedPrefInstTest {
 		val key = "test_enum_name_key"
 		keys.add(key)
 		GenericSharedPrefMngr.setEnumValueByName(appContext, key, value)
-		Assert.assertEquals(value, GenericSharedPrefMngr.getEnumValueByName<ExampleEnum>(appContext, key))
+		Assert.assertEquals(value, GenericSharedPrefMngr.getNullableEnumValueByName<ExampleEnum>(appContext, key))
 	}
 
 	@Test
