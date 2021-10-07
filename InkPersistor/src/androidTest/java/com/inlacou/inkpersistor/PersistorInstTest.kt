@@ -27,19 +27,19 @@ class PersistorInstTest {
 		Persistor.additionalGenericLoader = { context, key, field, isNullable, default, sharedPreferences ->
 			when(field.genericType) {
 				GenericHolders::class.java.getDeclaredField("countryList").genericType ->
-					if(isNullable) GenericSharedPrefMngr.getNullableList(appContext, key, default = default as List<Country>, sharedPreferences = sharedPreferences)
-					else GenericSharedPrefMngr.getList(appContext, key, default = default as List<Country>, sharedPreferences = sharedPreferences)
+					if(isNullable) GenericSharedPrefMngr.getNullableList(appContext, key, default = default as List<Country>)
+					else GenericSharedPrefMngr.getList(appContext, key, default = default as List<Country>)
 				GenericHolders::class.java.getDeclaredField("countryVisitsHashMap").genericType ->
-					if(isNullable) GenericSharedPrefMngr.getNullableList(appContext, key, default = (default as HashMap<Country, Int>).toList(), sharedPreferences = sharedPreferences)?.toHashMap()
-					else GenericSharedPrefMngr.getList(appContext, key, default = (default as HashMap<Country, Int>).toList(), sharedPreferences = sharedPreferences).toHashMap()
+					if(isNullable) GenericSharedPrefMngr.getNullableList(appContext, key, default = (default as HashMap<Country, Int>).toList())?.toHashMap()
+					else GenericSharedPrefMngr.getList(appContext, key, default = (default as HashMap<Country, Int>).toList()).toHashMap()
 				else -> throw FieldGenericTypeNotHandledException("${field.genericType} not handled")
 			}
 		}
 		Persistor.additionalLoader = { context, key, field, isNullable, default, sharedPreferences ->
 			when (field.type) {
 				ExampleEnum::class.java ->
-					if(isNullable) GenericSharedPrefMngr.getNullableEnumValueByName(appContext, key, default = default as ExampleEnum, sharedPreferences = sharedPreferences)
-					else GenericSharedPrefMngr.getEnumValueByName(appContext, key, default = default as ExampleEnum, sharedPreferences = sharedPreferences)
+					if(isNullable) GenericSharedPrefMngr.getNullableEnumValueByName(appContext, key, default = default as ExampleEnum)
+					else GenericSharedPrefMngr.getEnumValueByName(appContext, key, default = default as ExampleEnum)
 				else -> throw FieldTypeNotHandledException("${field.type} not handled")
 			}
 		}

@@ -36,7 +36,6 @@ class MainActivity : AppCompatActivity() {
 
 		Timber.plant(Timber.DebugTree())
 
-
 		Persistor.additionalLoader = { context, key, field, isNullable, default, sharedPreferences ->
 			Log.e("persistor", "key:                  $key")
 			Log.e("persistor", "type:                 ${field.type}")
