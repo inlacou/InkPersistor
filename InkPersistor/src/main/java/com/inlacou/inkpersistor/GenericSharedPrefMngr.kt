@@ -199,19 +199,33 @@ object GenericSharedPrefMngr {
 		editor.putInt(key, value.ordinal)
 		editor.commit()
 	}
-	
+
 	/**
-	 * Warning, the GET part does not work
+	 * WARNING, not tested
 	 */
-	fun <T: Enum<T>> setEnumValueByName(context: Context, key: String, value: Enum<T>, sharedPreferences: SharedPreferences = android.preference.PreferenceManager.getDefaultSharedPreferences(context)) {
-		Logger.d("enumvaluebyname | set enum by name $key... ${value.name}(${value.ordinal})")
+	fun <T: Enum<T>> setNullableEnumValueByPosition(context: Context, key: String, value: Enum<T>?, sharedPreferences: SharedPreferences = PreferenceManager.getDefaultSharedPreferences(context)) {
+		Logger.d("set enum by position $key... ${value?.ordinal}(${value?.name})")
+		val editor = sharedPreferences.edit()
+		if(value==null) editor.remove(key)
+		else editor.putInt(key, value.ordinal)
+		editor.commit()
+	}
+
+	fun <T: Enum<T>> setEnumValueByName(context: Context, key: String, value: Enum<T>, sharedPreferences: SharedPreferences = PreferenceManager.getDefaultSharedPreferences(context)) {
 		val editor = sharedPreferences.edit()
 		editor.putString(key, value.name)
 		editor.commit()
 	}
-	
+
+	fun <T: Enum<T>> setNullableEnumValueByName(context: Context, key: String, value: Enum<T>?, sharedPreferences: SharedPreferences = PreferenceManager.getDefaultSharedPreferences(context)) {
+		val editor = sharedPreferences.edit()
+		if(value==null) editor.remove(key)
+		else editor.putString(key, value.name)
+		editor.commit()
+	}
+
 	//Look at alternative to maybe avoid reified ("not working, try with this: https://stackoverflow.com/questions/53563449/how-to-get-the-value-of-an-enum-using-generics")
-	inline fun <reified T: Enum<T>> getEnumValueByPosition(context: Context, key: String, sharedPreferences: SharedPreferences = android.preference.PreferenceManager.getDefaultSharedPreferences(context)): T? {
+	inline fun <reified T: Enum<T>> getEnumValueByPosition(context: Context, key: String, sharedPreferences: SharedPreferences = PreferenceManager.getDefaultSharedPreferences(context)): T? {
 		Logger.d("saved $key... ${sharedPreferences.getInt(key, -1)}")
 		return sharedPreferences.getInt(key, -1).let {
 			if(it==-1) null
