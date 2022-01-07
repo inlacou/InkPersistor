@@ -256,13 +256,15 @@ object GenericSharedPrefMngr {
 		return sharedPreferences.getString(key, "{}")?.fromJson()
 	}
 	
-	fun setItem(context: Context, key: String, value: Any?, sharedPreferences: SharedPreferences = PreferenceManager.getDefaultSharedPreferences(context)) {
+	fun <T> setItem(context: Context, key: String, value: T, sharedPreferences: SharedPreferences = PreferenceManager.getDefaultSharedPreferences(context)) {
 		Logger.d("set$key... $value")
 		val editor = sharedPreferences.edit()
 		editor.putString(key, value?.toJson() ?: "{}")
 		editor.commit()
 	}
-	
+	fun <T> setItem(context: Context, key: String, value: T, clazz: Class<T>, sharedPreferences: SharedPreferences = PreferenceManager.getDefaultSharedPreferences(context))
+		= setItem(context, key, value, sharedPreferences)
+
 	fun setList(context: Context, key: String, value: List<Any?>, sharedPreferences: SharedPreferences = PreferenceManager.getDefaultSharedPreferences(context)) {
 		Logger.d("set list $key... $value")
 		val editor = sharedPreferences.edit()
