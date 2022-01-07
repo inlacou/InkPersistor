@@ -255,7 +255,10 @@ object GenericSharedPrefMngr {
 		Logger.d("saved$key... ${sharedPreferences.getString(key, "{}")}")
 		return sharedPreferences.getString(key, "{}")?.fromJson()
 	}
-	
+
+	inline fun <reified T: Any> getItem(context: Context, key: String, clazz: Class<T>, sharedPreferences: SharedPreferences = PreferenceManager.getDefaultSharedPreferences(context)): T?
+		= getItem(context, key, sharedPreferences)
+
 	fun <T> setItem(context: Context, key: String, value: T, sharedPreferences: SharedPreferences = PreferenceManager.getDefaultSharedPreferences(context)) {
 		Logger.d("set$key... $value")
 		val editor = sharedPreferences.edit()
