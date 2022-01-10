@@ -255,9 +255,10 @@ object GenericSharedPrefMngr {
 		Logger.d("saved$key... ${sharedPreferences.getString(key, "{}")}")
 		return sharedPreferences.getString(key, "{}")?.fromJson()
 	}
-
-	inline fun <reified T: Any> getItem(context: Context, key: String, clazz: Class<out T>, sharedPreferences: SharedPreferences = PreferenceManager.getDefaultSharedPreferences(context)): T?
-		= getItem(context, key, sharedPreferences)
+	inline fun <reified T: Any> getItem(context: Context, key: String, clazz: Class<out T>, sharedPreferences: SharedPreferences = PreferenceManager.getDefaultSharedPreferences(context)): T? {
+		Logger.d("saved$key... ${sharedPreferences.getString(key, "{}")}")
+		return sharedPreferences.getString(key, "{}")?.fromJson(clazz)
+	}
 
 	fun <T> setItem(context: Context, key: String, value: T, sharedPreferences: SharedPreferences = PreferenceManager.getDefaultSharedPreferences(context)) {
 		Logger.d("set$key... $value")
@@ -266,7 +267,7 @@ object GenericSharedPrefMngr {
 		editor.commit()
 	}
 	fun <T> setItem(context: Context, key: String, value: T, clazz: Class<out T>, sharedPreferences: SharedPreferences = PreferenceManager.getDefaultSharedPreferences(context))
-		= setItem(context, key, value, sharedPreferences)
+		= GenericSharedPrefMngr.setItem(context, key, value, sharedPreferences)
 
 	fun setList(context: Context, key: String, value: List<Any?>, sharedPreferences: SharedPreferences = PreferenceManager.getDefaultSharedPreferences(context)) {
 		Logger.d("set list $key... $value")
